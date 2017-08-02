@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.springboot.mybatisdemo.mapper.UserMapper">
+
+    <sql id="field">
+        id,username,usercode
+    </sql>
+
+    <select id="getUser" resultType="com.example.springboot.mybatisdemo.domain.User" parameterType="long">
+        select
+         <include refid="field" />
+        from user
+        where id = #{id}
+    </select>
+
+    <select id="findAll" resultType="com.example.springboot.mybatisdemo.domain.User">
+        SELECT <include refid="field"/> FROM USER
+    </select>
+
+</mapper>
