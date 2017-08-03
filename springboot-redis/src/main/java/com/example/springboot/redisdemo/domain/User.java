@@ -1,12 +1,26 @@
 package com.example.springboot.redisdemo.domain;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.io.Serializable;
+
 /**
  * Created by liuguo on 2017/8/2.
  */
-public class User {
+@Entity
+public class User implements Serializable{
+    @Id
+    @GeneratedValue
     private Long id;
+
+    @Column(nullable = false)
     private String name;
+    @Column(nullable = false)
     private String password;
+
+    @Column(name = "authkey")
     private String authKey;
 
     public Long getId() {

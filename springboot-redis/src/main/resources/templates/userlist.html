@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <script type="text/javascript" th:src="@{https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js}"></script>
+    <link th:href="@{https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css}" rel="stylesheet"/>
+    <link th:href="@{/css/default.css}" rel="stylesheet"/>
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon"/>
+    <meta charset="UTF-8"/>
+    <title>用户列表</title>
+</head>
+
+<body>
+
+<div class="contentDiv">
+
+    <h3>Wecome! <span th:text="${currentuser}"></span></h3>
+    <h4><a style="float: right" th:href="@{/users/logout}">退出</a></h4>
+    <table class="table table-hover table-condensed">
+        <legend>
+            <strong>用户列表</strong>
+        </legend>
+        <thead>
+        <tr>
+            <th>用户编号</th>
+            <th>名称</th>
+            <th>密码</th>
+            <th>验证Key</th>
+            <th>管理</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <br/>
+        <br/>
+        <tr th:each="user : ${userlist}">
+            <th scope="row" th:text="${user.id}"></th>
+            <td><a th:href="@{/users/update/{userId}(userId=${user.id})}" th:text="${user.name}"></a></td>
+            <td th:text="${user.password}"></td>
+            <td th:text="${user.authKey}"></td>
+            <td><a class="btn btn-danger" th:href="@{/users/delete/{userId}(userId=${user.id})}">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div><a class="btn btn-primary" th:href="@{/users/create}" role="button">创建用户</a></div>
+</div>
+
+</body>
+</html>

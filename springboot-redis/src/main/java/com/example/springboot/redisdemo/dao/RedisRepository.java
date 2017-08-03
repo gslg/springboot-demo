@@ -11,6 +11,7 @@ import org.springframework.data.redis.support.collections.RedisList;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
@@ -84,5 +85,35 @@ public class RedisRepository {
         }
         BoundHashOperations<String, String, String> userOps = template.boundHashOps(KeyUtils.uid(uid));
         return userOps.get("name");
+    }
+
+    public boolean isUserValid(String name) {
+        return template.hasKey(KeyUtils.user(name));
+    }
+
+    /**
+     * 验证用户
+     * @param user
+     * @param pass
+     * @return
+     */
+    public boolean auth(String user, String pass) {
+        // find uid
+        String uid = findUid(user);
+        if (StringUtils.hasText(uid)) {
+            BoundHashOperations<String, String, String> userOps = template.boundHashOps(KeyUtils.uid(uid));
+            return userOps.get("password").equals(pass);
+        }
+
+        return false;
+    }
+
+    public void deleteAuth(String user) {
+        String uid = findUid(user);
+
+        String authKey = KeyUtils.auth(uid);
+        String auth = valueOps.get(authKey);
+
+        template.delete(Arrays.asList(authKey, KeyUtils.authKey(auth)));
     }
 }

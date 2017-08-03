@@ -24,20 +24,29 @@ public class CookieInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
        Cookie[] cookies = request.getCookies();
-
+        System.out.println("拦截请求request = [" + request.getRequestURI() + "]");
+        boolean flag = false;
         if(!ObjectUtils.isEmpty(cookies)){
             for(Cookie cookie : cookies){
                 if(REDIS_COOKIE.equals(cookie.getName())){
                     String auth = cookie.getValue();
                     String name = redisRepository.findNameForAuth(auth);
                     if(name != null){
+                        flag = true;
                         String uid = redisRepository.findUid(name);
                         AbstractSimpleSecurity.setUser(name, uid);
+                    }else {
+                        flag = false;
                     }
                 }
             }
         }
-        return true;
+
+        if(!flag){
+            //未登陆跳转到登陆页面
+            response.sendRedirect(request.getContextPath()+"/toLogin");
+        }
+        return flag;
     }
 
     @Override
