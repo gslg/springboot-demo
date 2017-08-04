@@ -3,7 +3,6 @@ package com.example.springboot.redisdemo.service.impl;
 import com.example.springboot.redisdemo.dao.UserRepository;
 import com.example.springboot.redisdemo.domain.User;
 import com.example.springboot.redisdemo.service.UserService;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -16,13 +15,11 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService{
 
-    private final Logger logger = Logger.getLogger(UserServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public List<User> findAll() {
-        logger.info("查询所有用户...........");
         return userRepository.findAll();
     }
 

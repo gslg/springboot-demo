@@ -38,6 +38,27 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <!--要打包称war包项目发布到tomcat下需要排除spring-boot内嵌的tomcat-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-tomcat</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--移除对嵌入式Tomcat的依赖，这样打出的WAR包中，在lib目录下才不会包含Tomcat相关的JAR包，否则将会出现启动错误。
+        另外，在移除对Tomcat的依赖后，为了保证单独运行main方法启动没问题，还需要添加对spring-boot-starter-tomcat的依赖.
+        在这里将scope属性设置为provided，这样在最终形成的WAR中不会包含这个JAR包，因为Tomcat或Jetty等服务器在运行时将会提供相关的API类。
+        此时，执行mvn package命令就会得到一个WAR文件，我们可以直接将其放到Tomcat下运行（特别提醒：tomcat必须7.0.42版本以上）。-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!--应用系统的自省和监控的集成功能，可以对应用系统进行配置查看、相关功能统计等-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
         <!-- Spring Boot Test 依赖 -->
@@ -66,7 +87,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-
 
         <!-- Junit -->
         <dependency>
